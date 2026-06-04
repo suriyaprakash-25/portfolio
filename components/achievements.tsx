@@ -116,6 +116,7 @@ const cpStats = [
       { label: "Contest Rating", value: 1686, suffix: "" },
     ],
     badge: "DSA Specialist",
+    href: "https://leetcode.com/u/suriyaprakashrm/",
   },
   {
     platform: "CodeChef",
@@ -138,6 +139,7 @@ const cpStats = [
       { label: "Bronze Badges", value: 310, suffix: "+" },
     ],
     badge: "Badge Champion",
+    href: "https://www.skillrack.com/faces/resume.xhtml?id=514570&key=312bab7d9cd41f0e6d27c5892e6e3c551b296ccc",
   },
 ]
 
@@ -258,16 +260,23 @@ function CPCard({ cp, visible, delay }: { cp: (typeof cpStats)[0]; visible: bool
   const v0 = useCountUp(cp.stats[0].value, visible, 1600)
   const v1 = useCountUp(typeof cp.stats[1].value === "number" ? cp.stats[1].value : null, visible, 1800)
 
+  const CardComponent = cp.href ? "a" : "div"
+
   return (
-    <div className="relative rounded-2xl border overflow-hidden cursor-default bg-white/70 dark:bg-[#080812]/70"
+    <CardComponent
+      href={cp.href}
+      target={cp.href ? "_blank" : undefined}
+      rel={cp.href ? "noopener noreferrer" : undefined}
+      className={`relative rounded-2xl border overflow-hidden bg-white/70 dark:bg-[#080812]/70 block transition-all ${
+        cp.href ? "cursor-pointer hover:scale-[1.02]" : "cursor-default"
+      }`}
       style={{
-        
         borderColor: hovered ? `${cp.color}45` : `${cp.color}18`,
         backdropFilter: "blur(20px)",
         boxShadow: hovered ? `0 0 36px ${cp.glow}` : "none",
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0) scale(1)" : "translateY(24px) scale(0.96)",
-        transition: `opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease, border-color 0.3s ease`,
+        transform: visible ? "translateY(0)" : "translateY(24px)",
+        transition: `opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease, border-color 0.3s ease, scale 0.3s ease`,
         transitionDelay: `${delay}s`,
       }}
       onMouseEnter={() => setHovered(true)}
