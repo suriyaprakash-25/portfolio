@@ -28,7 +28,7 @@ const projects = [
     color1: "#8b5cf6",
     color2: "#6366f1",
     github: "https://github.com/suriyaprakash-25",
-    demo: null,
+    demo: "https://inv-gdg.vercel.app/home",
     mockupType: "inventory",
     metrics: [
       { label: "Manual Effort", value: "↓ 80%", icon: Zap },
@@ -186,7 +186,7 @@ const projects = [
     color1: "#10b981",
     color2: "#06b6d4",
     github: "https://github.com/suriyaprakash-25",
-    demo: null,
+    demo: "https://sih-two-theta.vercel.app/",
     mockupType: "metro",
     metrics: [
       { label: "Planning Time", value: "↓ 96%", icon: Timer },
