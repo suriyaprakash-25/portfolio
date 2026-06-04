@@ -53,7 +53,7 @@ export function generatePersonStructuredData() {
     image: 'https://avatars.githubusercontent.com/u/183195307?v=4',
     sameAs: [
       'https://github.com/suriyaprakash-25',
-      'https://linkedin.com/in/suriyaprakash-rm',
+      'https://www.linkedin.com/in/suriyaprakash-r-m-64133a327/',
     ],
     jobTitle: 'Full Stack Developer',
     knowsAbout: ['Web Development', 'AI/ML', 'DevOps', 'Next.js', 'Python', 'MLOps'],
