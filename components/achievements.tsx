@@ -326,7 +326,7 @@ function CPCard({ cp, visible, delay }: { cp: (typeof cpStats)[0]; visible: bool
             }} />
         </div>
       </div>
-    </div>
+    </CardComponent>
   )
 }
 
