@@ -1,16 +1,10 @@
-import { MetadataRoute } from 'next'
+import type { MetadataRoute } from "next"
+import { profile } from "@/lib/data/profile"
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://eindev.ir'
-
   return {
-    rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: ['/api/', '/_next/', '/admin/'],
-      },
-    ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    rules: { userAgent: "*", allow: "/" },
+    sitemap: `${profile.siteUrl}/sitemap.xml`,
+    host: profile.siteUrl,
   }
 }

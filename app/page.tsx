@@ -1,41 +1,32 @@
-import { Header } from "@/components/header"
-import { HeroSection } from "@/components/hero-section"
-import { ProjectsGrid } from "@/components/projects-grid"
-import { LabNotes } from "@/components/lab-notes"
-import { Achievements } from "@/components/achievements"
-import { Certifications } from "@/components/certifications"
-import { Footer } from "@/components/footer"
-import { CursorGlow } from "@/components/cursor-glow"
-import { generateWebsiteStructuredData, generatePersonStructuredData } from "@/lib/structured-data"
+import { About } from "@/components/about"
+import { Contact } from "@/components/contact"
+import { Experience } from "@/components/experience"
+import { FeaturedWork } from "@/components/featured-work"
+import { Hero } from "@/components/hero"
+import { Lab } from "@/components/lab"
+import { Recognition } from "@/components/recognition"
+import { Skills } from "@/components/skills"
+import { getProfilePhoto, getResume } from "@/lib/assets"
+import { personStructuredData } from "@/lib/structured-data"
 
 export default function Home() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://suriyaprakash.dev'
-  const websiteStructuredData = generateWebsiteStructuredData(baseUrl)
-  const personStructuredData = generatePersonStructuredData()
+  const photo = getProfilePhoto()
+  const resume = getResume()
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personStructuredData(photo)) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personStructuredData) }}
-      />
-      <main className="relative min-h-screen overflow-hidden scanlines">
-        <CursorGlow />
-        <div className="relative z-10">
-          <Header />
-          <HeroSection />
-          <ProjectsGrid />
-          <LabNotes />
-          <Achievements />
-          <Certifications />
-          <Footer />
-        </div>
-      </main>
+      <Hero photo={photo} resume={resume} />
+      <FeaturedWork />
+      <Lab />
+      <About />
+      <Experience />
+      <Skills />
+      <Recognition />
+      <Contact resume={resume} />
     </>
   )
 }
-
