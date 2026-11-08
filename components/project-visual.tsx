@@ -38,7 +38,7 @@ export function ProjectVisual({
             fill
             priority={priority}
             sizes="(min-width: 1024px) 640px, 100vw"
-            className="object-cover object-top"
+            className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
           />
         </div>
       ) : (

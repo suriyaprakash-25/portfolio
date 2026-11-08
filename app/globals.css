@@ -55,6 +55,11 @@
   * {
     @apply border-border;
   }
+  html,
+  body {
+    /* never allow sideways scrolling (decorative overflow like tooltips/marquees) */
+    overflow-x: clip;
+  }
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
@@ -139,4 +144,485 @@
       animation-range: entry calc(0% + var(--reveal-delay, 0px)) entry calc(40% + var(--reveal-delay, 0px));
     }
   }
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOTION SYSTEM
+   Every effect below is decorative: content is visible
+   without JS, and reduced-motion users get a calm page.
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Load-in (hero, header) ── */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+.rise {
+  animation: rise 0.9s var(--ease-out) both;
+  animation-delay: calc(var(--d, 0) * 90ms + 80ms);
+}
+
+@keyframes header-in {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.header-in {
+  animation: header-in 0.7s var(--ease-out) both;
+}
+
+/* Headline words rise out of a mask, one after another */
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.word {
+  display: inline-block;
+  animation: word-up 1s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 55ms + 220ms);
+}
+@keyframes word-up {
+  from {
+    transform: translateY(110%) rotate(5deg);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Hand-drawn underline */
+.scribble path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 1.1s cubic-bezier(0.6, 0, 0.2, 1) 1.15s forwards;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Animated gradient text */
+.text-shimmer {
+  background: linear-gradient(100deg, var(--foreground) 20%, var(--accent) 40%, var(--foreground) 60%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -150% 0;
+  }
+}
+
+/* Glitch — used whenever the loop hits "Break" */
+@keyframes glitch {
+  0%,
+  100% {
+    transform: none;
+    text-shadow: none;
+  }
+  20% {
+    transform: translate(-1px, 1px) skewX(-8deg);
+    text-shadow: 2px 0 #f43f5e, -2px 0 #22d3ee;
+  }
+  40% {
+    transform: translate(1px, -1px);
+    text-shadow: -2px 0 #f43f5e, 2px 0 #22d3ee;
+  }
+  60% {
+    transform: translate(-1px, 0) skewX(6deg);
+    text-shadow: 1px 0 #f43f5e, -1px 0 #22d3ee;
+  }
+}
+.glitch {
+  display: inline-block;
+  animation: glitch 0.45s steps(2, end) infinite;
+}
+
+/* ── Scroll progress bar ── */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  z-index: 60;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--accent), #a78bfa);
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: progress-grow linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes progress-grow {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Section eyebrow line draws in as the heading arrives */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .line-grow {
+      transform-origin: left;
+      animation: line-grow linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 60%;
+    }
+  }
+}
+@keyframes line-grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* ── Cursor spotlight on cards (pointer position set by PointerFx) ── */
+@property --spot {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+[data-spotlight] {
+  background-image: radial-gradient(
+    480px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklch, var(--accent) calc(var(--spot) * 13%), transparent),
+    transparent 45%
+  );
+  transition: --spot 0.4s ease, border-color 0.3s ease, translate 0.3s ease, box-shadow 0.3s ease;
+}
+[data-spotlight]:hover {
+  --spot: 1;
+}
+
+/* ── Magnetic buttons & 3D tilt ── */
+[data-magnetic] {
+  transition: translate 0.35s var(--ease-out), opacity 0.2s ease;
+}
+[data-tilt] {
+  transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.6s var(--ease-out), translate 0.5s var(--ease-out), box-shadow 0.5s ease;
+}
+
+/* ── Giant motto band (scroll-linked marquee) ── */
+.band-word {
+  font-size: clamp(2.75rem, 9vw, 8rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in oklch, var(--foreground) 24%, transparent);
+  transition: color 0.4s ease;
+}
+.band-word:hover {
+  color: var(--foreground);
+}
+.band-break {
+  -webkit-text-stroke-color: color-mix(in oklch, #f43f5e 70%, transparent);
+}
+.band-break:hover {
+  color: #f43f5e;
+  animation: glitch 0.45s steps(2, end) infinite;
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .band-row {
+      animation: band-x linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+    .band-row-rev {
+      animation-name: band-x-rev;
+    }
+  }
+  @supports not (animation-timeline: view()) {
+    .band-row {
+      animation: band-x 40s linear infinite alternate;
+    }
+    .band-row-rev {
+      animation-name: band-x-rev;
+    }
+  }
+}
+@keyframes band-x {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: -30% 0;
+  }
+}
+@keyframes band-x-rev {
+  from {
+    translate: -30% 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+/* ── The loop ── */
+@keyframes loop-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.loop-progress {
+  transform-origin: left;
+  animation: loop-progress var(--loop-ms, 5000ms) linear forwards;
+}
+.loop-paused .loop-progress {
+  animation-play-state: paused;
+}
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.panel-in {
+  animation: panel-in 0.5s var(--ease-out) both;
+}
+
+/* ── Toast ── */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+.toast-in {
+  animation: toast-in 0.45s var(--ease-spring) both;
+}
+
+/* Flask wiggle on the experiment button */
+@keyframes wiggle {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  25% {
+    rotate: -14deg;
+  }
+  75% {
+    rotate: 14deg;
+  }
+}
+.group:hover .wiggle {
+  animation: wiggle 0.5s ease-in-out 2;
+}
+
+/* ═══ Experiments ═══ */
+
+/* 01 · Blueprint — X-ray the page and label each component */
+.mode-blueprint main *,
+.mode-blueprint header nav * {
+  outline: 1px dashed color-mix(in oklch, var(--accent) 45%, transparent);
+  outline-offset: -1px;
+}
+.mode-blueprint main img,
+.mode-blueprint main canvas {
+  opacity: 0.25;
+  filter: grayscale(1);
+}
+.mode-blueprint body {
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--accent) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--accent) 9%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.mode-blueprint [data-component] {
+  position: relative;
+}
+.mode-blueprint [data-component]::before {
+  content: "<" attr(data-component) " />";
+  position: absolute;
+  top: 5rem;
+  right: 1.25rem;
+  z-index: 40;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font: 600 11px/1.4 var(--font-mono);
+}
+
+/* 02 · Break — chromatic aberration while things fall apart */
+.mode-break main {
+  filter: saturate(1.4);
+}
+.mode-break main :is(h1, h2, h3, p, a, span) {
+  text-shadow: 2px 0 rgb(244 63 94 / 0.7), -2px 0 rgb(34 211 238 / 0.7);
+}
+
+/* Circular reveal when switching theme */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* ── Typewriter caret ── */
+@keyframes caret {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ── Running tech ticker ── */
+@keyframes marquee {
+  to {
+    translate: -50% 0;
+  }
+}
+.marquee-track {
+  animation: marquee 55s linear infinite;
+}
+.marquee-reverse {
+  animation-direction: reverse;
+  animation-duration: 65s;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ── Section titles reveal word by word ── */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-word {
+      display: inline-block;
+      animation: word-in linear both;
+      animation-timeline: view();
+      animation-range: entry calc(5% + var(--w, 0) * 5%) entry calc(50% + var(--w, 0) * 5%);
+    }
+  }
+}
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em);
+    filter: blur(6px);
+  }
+}
+
+/* ── Highlighter pen on key phrases ── */
+.hl {
+  color: var(--foreground);
+  background: linear-gradient(transparent 58%, color-mix(in oklch, var(--accent) 28%, transparent) 0) no-repeat;
+  background-size: 100% 100%;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hl {
+      animation: hl-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 40% cover 45%;
+    }
+  }
+}
+@keyframes hl-draw {
+  from {
+    background-size: 0% 100%;
+  }
+}
+
+/* ── Experience timeline draws itself ── */
+.timeline-draw {
+  transform-origin: top;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .timeline-draw {
+      animation: draw-y linear both;
+      animation-timeline: view();
+      animation-range: entry 30% cover 70%;
+    }
+  }
+}
+@keyframes draw-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+/* ── Shine sweep across primary buttons ── */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.45) 50%, transparent 70%);
+  translate: -120% 0;
+  transition: translate 0.75s var(--ease-out);
+}
+.btn-shine:hover::after {
+  translate: 120% 0;
+}
+
+/* ── Little hop for icons on card hover ── */
+@keyframes hop {
+  0%,
+  100% {
+    transform: none;
+  }
+  35% {
+    transform: translateY(-6px) rotate(-8deg);
+  }
+  65% {
+    transform: translateY(0) rotate(4deg);
+  }
+}
+.group:hover .hop {
+  animation: hop 0.6s var(--ease-out);
 }

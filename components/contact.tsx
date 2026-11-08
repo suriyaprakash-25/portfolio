@@ -11,13 +11,13 @@ export function Contact({ resume }: { resume: string | null }) {
   ]
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="relative overflow-hidden px-5 py-24 sm:px-8 sm:py-32">
+    <section id="contact" data-component="Contact" aria-labelledby="contact-title" className="relative overflow-hidden px-5 py-24 sm:px-8 sm:py-32">
       <div className="glow pointer-events-none absolute bottom-0 left-1/2 -z-10 h-[480px] w-[900px] -translate-x-1/2 translate-y-1/2" aria-hidden />
       <div className="mx-auto max-w-6xl">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">07 — Contact</p>
           <h2 id="contact-title" className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            Build something meaningful.
+            Build something <span className="text-shimmer">meaningful.</span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
             I'm always open to interesting conversations, collaborations, projects and opportunities — internships,
@@ -26,6 +26,7 @@ export function Contact({ resume }: { resume: string | null }) {
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
             <a
               href={`mailto:${profile.email}?subject=${encodeURIComponent("Hello Suriya")}`}
+              data-magnetic
               className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
             >
               <Mail className="h-4 w-4" /> Say hello
@@ -51,7 +52,8 @@ export function Contact({ resume }: { resume: string | null }) {
                 <a
                   href={c.href}
                   {...(c.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-accent/50"
+                  data-spotlight
+                  className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-5 hover:border-accent/50"
                 >
                   <c.icon className="h-5 w-5 shrink-0 text-muted-foreground transition-colors group-hover:text-accent" />
                   <div className="min-w-0 flex-1">

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowUpRight, Github } from "lucide-react"
+import { ArrowUpRight, ChevronDown, Github } from "lucide-react"
 import { Section, Tag } from "@/components/section"
 import { labProjects, type LabCategory } from "@/lib/data/projects"
 import { profile } from "@/lib/data/profile"
@@ -11,7 +11,9 @@ const filters: ("All" | LabCategory)[] = ["All", "AI & ML", "Agents & LLMs", "Fu
 
 export function Lab() {
   const [filter, setFilter] = useState<(typeof filters)[number]>("All")
-  const shown = filter === "All" ? labProjects : labProjects.filter((p) => p.category === filter)
+  const [expanded, setExpanded] = useState(false)
+  const matching = filter === "All" ? labProjects : labProjects.filter((p) => p.category === filter)
+  const shown = filter === "All" && !expanded ? matching.slice(0, 6) : matching
 
   return (
     <Section
@@ -26,6 +28,7 @@ export function Lab() {
         </>
       }
       className="bg-muted/40"
+      component="Lab"
     >
       <div role="group" aria-label="Filter projects" className="mb-8 flex flex-wrap gap-2">
         {filters.map((f) => (
@@ -52,7 +55,8 @@ export function Lab() {
           return (
             <li
               key={p.name}
-              className="group relative flex flex-col rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-accent/50 hover:shadow-lg hover:shadow-black/5"
+              data-spotlight
+              className="panel-in group relative flex flex-col rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-accent/50 hover:shadow-lg hover:shadow-black/5"
             >
               <div className="mb-4 flex items-start justify-between gap-4">
                 <span className="font-mono text-[11px] uppercase tracking-wider text-accent">{p.category}</span>
@@ -89,6 +93,19 @@ export function Lab() {
           )
         })}
       </ul>
+
+      {filter === "All" && !expanded && labProjects.length > 6 && (
+        <div className="mt-8 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setExpanded(true)}
+            className="group inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+          >
+            Show all {labProjects.length} experiments
+            <ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
+          </button>
+        </div>
+      )}
 
       <p className="mt-10 text-center text-sm text-muted-foreground">
         More in progress on{" "}

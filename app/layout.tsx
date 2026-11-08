@@ -5,6 +5,9 @@ import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { Experiments } from "@/components/fx/experiments"
+import { PointerFx } from "@/components/fx/pointer-fx"
+import { Terminal } from "@/components/fx/terminal"
 import { getProfilePhoto, getResume } from "@/lib/assets"
 import { profile } from "@/lib/data/profile"
 import "./globals.css"
@@ -63,9 +66,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable}`}>
       <body className="font-sans">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+          <div className="scroll-progress" aria-hidden />
           <SiteHeader photo={photo} resume={resume} />
           <main id="main">{children}</main>
           <SiteFooter />
+          <PointerFx />
+          <Experiments />
+          <Terminal resume={resume} />
         </ThemeProvider>
         <Analytics />
       </body>

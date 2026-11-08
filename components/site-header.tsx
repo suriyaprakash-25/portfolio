@@ -3,7 +3,8 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
-import { FileText, Menu, X } from "lucide-react"
+import { FileText, Menu, SquareTerminal, X } from "lucide-react"
+import { emit, EVENTS } from "@/components/fx/events"
 import { Avatar } from "@/components/avatar"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { profile } from "@/lib/data/profile"
@@ -54,7 +55,7 @@ export function SiteHeader({ photo, resume }: { photo: string | null; resume: st
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300",
+        "header-in fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300",
         scrolled || open ? "border-b border-border/70 bg-background/80 backdrop-blur-xl" : "border-b border-transparent",
       )}
     >
@@ -79,7 +80,7 @@ export function SiteHeader({ photo, resume }: { photo: string | null; resume: st
               href={`/#${item.id}`}
               aria-current={active === item.id ? "true" : undefined}
               className={cn(
-                "rounded-full px-3.5 py-2 text-sm transition-colors",
+                "group rounded-full px-3.5 py-2 text-sm transition-colors",
                 active === item.id ? "text-foreground" : "text-muted-foreground hover:text-foreground",
               )}
             >
@@ -88,12 +89,13 @@ export function SiteHeader({ photo, resume }: { photo: string | null; resume: st
                 aria-hidden
                 className={cn(
                   "mx-auto mt-0.5 block h-px bg-accent transition-all duration-300",
-                  active === item.id ? "w-full" : "w-0",
+                  active === item.id ? "w-full" : "w-0 group-hover:w-full group-hover:opacity-50",
                 )}
               />
             </Link>
           ))}
           <span className="mx-2 h-5 w-px bg-border" aria-hidden />
+          <TerminalButton />
           <ThemeToggle />
           {resume && (
             <a
@@ -109,6 +111,7 @@ export function SiteHeader({ photo, resume }: { photo: string | null; resume: st
         </div>
 
         <div className="flex items-center gap-1 md:hidden">
+          <TerminalButton />
           <ThemeToggle />
           <button
             type="button"
@@ -152,5 +155,19 @@ export function SiteHeader({ photo, resume }: { photo: string | null; resume: st
         </div>
       )}
     </header>
+  )
+}
+
+function TerminalButton() {
+  return (
+    <button
+      type="button"
+      onClick={() => emit(EVENTS.terminal)}
+      aria-label="Open terminal (Ctrl K)"
+      title="Terminal — Ctrl K"
+      className="group inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-accent"
+    >
+      <SquareTerminal className="h-4 w-4 transition-transform group-hover:-rotate-6 group-hover:scale-110" />
+    </button>
   )
 }

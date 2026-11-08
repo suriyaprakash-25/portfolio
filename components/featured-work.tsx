@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { ArrowRight, ArrowUpRight, Github } from "lucide-react"
+import { CountUp } from "@/components/fx/count-up"
 import { ProjectVisual } from "@/components/project-visual"
 import { Reveal } from "@/components/reveal"
 import { Section, Tag } from "@/components/section"
@@ -13,6 +14,7 @@ export function FeaturedWork() {
       index="01"
       eyebrow="Selected work"
       title="Products I've designed, built and shipped."
+      component="FeaturedWork"
       description="Three projects I'm proudest of — each one started with a real problem. Open a case study for the problem, the approach and what I built."
     >
       <div className="flex flex-col gap-20 sm:gap-28">
@@ -25,18 +27,23 @@ export function FeaturedWork() {
                 aria-label={`Read the ${project.name} case study`}
                 tabIndex={-1}
               >
-                <ProjectVisual
-                  project={project}
-                  className="transition-transform duration-500 group-hover:-translate-y-1 group-hover:shadow-2xl"
-                />
+                <div data-tilt className="rounded-2xl">
+                  <ProjectVisual project={project} className="transition-[translate,box-shadow] duration-500 group-hover:-translate-y-1 group-hover:shadow-2xl" />
+                </div>
               </Link>
 
               <div className="lg:col-span-5">
+                <p className="mb-4 font-mono text-5xl font-semibold leading-none tracking-tighter text-transparent [-webkit-text-stroke:1px_var(--border)] sm:text-6xl" aria-hidden>
+                  {String(i + 1).padStart(2, "0")}
+                </p>
                 <p className="font-mono text-xs uppercase tracking-[0.18em] text-subtle-foreground">
                   {project.date} · {project.role}
                 </p>
                 <h3 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-                  <Link href={`/work/${project.slug}`} className="hover:text-accent">
+                  <Link
+                    href={`/work/${project.slug}`}
+                    className="bg-gradient-to-r from-accent to-accent bg-[length:0%_2px] bg-left-bottom bg-no-repeat pb-1 transition-[background-size,color] duration-500 hover:bg-[length:100%_2px] hover:text-accent"
+                  >
                     {project.name}
                   </Link>
                 </h3>
@@ -47,7 +54,9 @@ export function FeaturedWork() {
                   {project.metrics.map((m) => (
                     <div key={m.label}>
                       <dt className="sr-only">{m.label}</dt>
-                      <dd className="text-lg font-semibold">{m.value}</dd>
+                      <dd className="text-lg font-semibold">
+                        <CountUp value={m.value} />
+                      </dd>
                       <dd className="text-xs leading-snug text-muted-foreground">{m.label}</dd>
                     </div>
                   ))}

@@ -5,9 +5,11 @@ import { education, experience } from "@/lib/data/career"
 
 export function Experience() {
   return (
-    <Section id="experience" index="04" eyebrow="Experience" title="Where I've been building." className="bg-muted/40">
+    <Section id="experience" index="04" eyebrow="Experience" title="Where I've been building." className="bg-muted/40" component="Experience">
       <div className="grid gap-14 lg:grid-cols-12">
-        <ol className="relative space-y-10 border-l border-border pl-8 lg:col-span-8">
+        <div className="relative lg:col-span-8">
+        <span aria-hidden className="timeline-draw absolute left-0 top-0 h-full w-px bg-gradient-to-b from-accent via-violet-400 to-transparent" />
+        <ol className="relative space-y-10 border-l border-border pl-8">
           {experience.map((job, i) => (
             <Reveal as="li" key={job.org + job.role} delay={i * 0.05} className="relative">
                 <span
@@ -41,9 +43,10 @@ export function Experience() {
             </Reveal>
           ))}
         </ol>
+        </div>
 
         <Reveal delay={0.1} className="lg:col-span-4">
-          <div className="rounded-2xl border border-border bg-card p-6">
+          <div data-spotlight className="rounded-2xl border border-border bg-card p-6">
             <h3 className="mb-5 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-subtle-foreground">
               <GraduationCap className="h-4 w-4" /> Education
             </h3>
