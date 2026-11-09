@@ -30,3 +30,6 @@ next-env.d.ts
 # personal documents
 *.pdf
 !public/resume.pdf
+
+# original photo (optimised copy lives in public/profile.jpg)
+/profilepicture*.jpeg
