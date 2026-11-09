@@ -241,7 +241,7 @@ export function Terminal({ resume }: { resume: string | null }) {
           <>
             email     <A href={`mailto:${profile.email}`}>{profile.email}</A>
             {"\n"}github    <A href={profile.links.github}>github.com/suriyaprakash-25</A>
-            {"\n"}linkedin  <A href={profile.links.linkedin}>linkedin.com/in/suriyaprakash-r-m</A>
+            {"\n"}linkedin  <A href={profile.links.linkedin}>linkedin.com/in/suriya-prakash-r-m</A>
           </>,
         )
       case "email":

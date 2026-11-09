@@ -55,7 +55,7 @@ export const profile = {
 
   links: {
     github: "https://github.com/suriyaprakash-25",
-    linkedin: "https://www.linkedin.com/in/suriyaprakash-r-m-64133a327/",
+    linkedin: "https://www.linkedin.com/in/suriya-prakash-r-m-64133a327",
     leetcode: "https://leetcode.com/u/suriyaprakashrm/",
     skillrack:
       "https://www.skillrack.com/faces/resume.xhtml?id=514570&key=312bab7d9cd41f0e6d27c5892e6e3c551b296ccc",
