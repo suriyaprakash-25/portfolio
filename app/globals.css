@@ -158,21 +158,33 @@
 }
 
 /* ── Load-in (hero, header) ── */
+/* opacity + transform only: compositor-friendly, no expensive blur on load */
 @keyframes rise {
   from {
     opacity: 0;
     transform: translateY(14px);
-    filter: blur(6px);
   }
   to {
     opacity: 1;
     transform: none;
-    filter: none;
   }
 }
 .rise {
-  animation: rise 0.9s var(--ease-out) both;
-  animation-delay: calc(var(--d, 0) * 90ms + 80ms);
+  animation: rise 0.7s var(--ease-out) both;
+  animation-delay: calc(var(--d, 0) * 55ms + 40ms);
+}
+/* Slide only (never invisible): keeps big text blocks counting as painted
+   immediately, so Largest Contentful Paint isn't delayed by the animation. */
+@keyframes rise-soft {
+  from {
+    transform: translateY(12px);
+  }
+  to {
+    transform: none;
+  }
+}
+.rise-soft {
+  animation: rise-soft 0.7s var(--ease-out) both;
 }
 
 @keyframes header-in {
@@ -199,8 +211,8 @@
 }
 .word {
   display: inline-block;
-  animation: word-up 1s var(--ease-out) both;
-  animation-delay: calc(var(--i, 0) * 55ms + 220ms);
+  animation: word-up 0.85s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 55ms + 120ms);
 }
 @keyframes word-up {
   from {
@@ -227,10 +239,21 @@
 .text-shimmer {
   background: linear-gradient(100deg, var(--foreground) 20%, var(--accent) 40%, var(--foreground) 60%);
   background-size: 250% 100%;
+  background-position: 40% 0;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: shimmer 6s linear infinite;
+}
+/* Scroll-linked instead of infinite: the sweep follows your scroll and costs
+   nothing while the page is idle (background-position can't be GPU-composited). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .text-shimmer {
+      animation: shimmer linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 60%;
+    }
+  }
 }
 @keyframes shimmer {
   from {
@@ -503,6 +526,9 @@
 }
 
 /* ── Typewriter caret ── */
+.caret-blink {
+  animation: caret 1s steps(1) infinite;
+}
 @keyframes caret {
   0%,
   100% {
@@ -516,11 +542,17 @@
 /* ── Running tech ticker ── */
 @keyframes marquee {
   to {
-    translate: -50% 0;
+    transform: translate3d(-50%, 0, 0);
   }
 }
 .marquee-track {
   animation: marquee 55s linear infinite;
+  animation-play-state: paused;
+}
+/* only run while on screen (set by TechMarquee) and not hovered */
+.marquee[data-playing] .marquee-track {
+  animation-play-state: running;
+  will-change: transform;
 }
 .marquee-reverse {
   animation-direction: reverse;
@@ -545,7 +577,6 @@
   from {
     opacity: 0;
     transform: translateY(0.45em);
-    filter: blur(6px);
   }
 }
 

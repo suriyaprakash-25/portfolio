@@ -5,9 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Experiments } from "@/components/fx/experiments"
-import { PointerFx } from "@/components/fx/pointer-fx"
-import { Terminal } from "@/components/fx/terminal"
+import { DeferredFx } from "@/components/fx/deferred-fx"
 import { getProfilePhoto, getResume } from "@/lib/assets"
 import { profile } from "@/lib/data/profile"
 import "./globals.css"
@@ -70,11 +68,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <SiteHeader photo={photo} resume={resume} />
           <main id="main">{children}</main>
           <SiteFooter />
-          <PointerFx />
-          <Experiments />
-          <Terminal resume={resume} />
+          <DeferredFx resume={resume} />
         </ThemeProvider>
-        <Analytics />
+        {/* Vercel Analytics only exists on Vercel; elsewhere its script would 404 */}
+        {process.env.VERCEL && <Analytics />}
       </body>
     </html>
   )

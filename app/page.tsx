@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import { About } from "@/components/about"
 import { Contact } from "@/components/contact"
 import { Experience } from "@/components/experience"
@@ -25,15 +26,33 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personStructuredData(photo)) }}
       />
-      <Hero photo={photo} resume={resume} push={push} />
-      <FeaturedWork />
+      {/* Each section is its own Suspense boundary so React 19 can hydrate them
+          one at a time and yield to the browser in between (no long blocking task). */}
+      <Suspense>
+        <Hero photo={photo} resume={resume} push={push} />
+      </Suspense>
+      <Suspense>
+        <FeaturedWork />
+      </Suspense>
       <MottoBand />
-      <Lab />
-      <About />
-      <Experience />
-      <Skills />
-      <Recognition />
-      <Contact resume={resume} />
+      <Suspense>
+        <Lab />
+      </Suspense>
+      <Suspense>
+        <About />
+      </Suspense>
+      <Suspense>
+        <Experience />
+      </Suspense>
+      <Suspense>
+        <Skills />
+      </Suspense>
+      <Suspense>
+        <Recognition />
+      </Suspense>
+      <Suspense>
+        <Contact resume={resume} />
+      </Suspense>
     </>
   )
 }

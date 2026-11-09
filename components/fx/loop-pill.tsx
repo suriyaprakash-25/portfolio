@@ -1,6 +1,6 @@
 "use client"
 
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import { prefersReducedMotion } from "@/components/fx/events"
 import { profile } from "@/lib/data/profile"
 import { cn } from "@/lib/utils"
@@ -9,19 +9,32 @@ import { cn } from "@/lib/utils"
 export function LoopPill({ className }: { className?: string }) {
   const steps = profile.motto
   const [active, setActive] = useState(-1)
+  const ref = useRef<HTMLAnchorElement>(null)
 
+  // Cycle only while the pill is on screen.
   useEffect(() => {
-    if (prefersReducedMotion()) return
+    const el = ref.current
+    if (!el || prefersReducedMotion()) return
     let i = 0
-    const id = window.setInterval(() => {
-      setActive(i)
-      i = (i + 1) % steps.length
-    }, 1300)
-    return () => window.clearInterval(id)
+    let id: number | undefined
+    const io = new IntersectionObserver(([e]) => {
+      window.clearInterval(id)
+      if (!e.isIntersecting) return
+      id = window.setInterval(() => {
+        setActive(i)
+        i = (i + 1) % steps.length
+      }, 1300)
+    })
+    io.observe(el)
+    return () => {
+      io.disconnect()
+      window.clearInterval(id)
+    }
   }, [steps.length])
 
   return (
     <a
+      ref={ref}
       href="#loop"
       aria-label={`How I build: ${steps.join(", ")}`}
       className={cn(

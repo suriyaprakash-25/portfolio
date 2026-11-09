@@ -14,7 +14,7 @@ export function GithubPulse({ push, serverLabel }: { push: LatestPush; serverLab
       href={push.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1.5 font-mono text-[11px] text-muted-foreground backdrop-blur transition-colors hover:border-accent/60 hover:text-foreground"
+      className="group inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 font-mono text-[11px] text-muted-foreground transition-colors hover:border-accent/60 hover:text-foreground"
     >
       <GitCommitHorizontal className="h-3.5 w-3.5 text-accent transition-transform duration-500 group-hover:rotate-180" />
       <span>

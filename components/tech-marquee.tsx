@@ -1,14 +1,30 @@
+"use client"
+
+import { useEffect, useRef } from "react"
 import { skillGroups } from "@/lib/data/career"
 import { cn } from "@/lib/utils"
 
-/** Endless running ticker of the tools I use. Pauses on hover; static for reduced motion. */
+/**
+ * Endless running ticker of the tools I use. Pauses on hover, pauses while
+ * off-screen (so it costs nothing until you see it), static for reduced motion.
+ */
 export function TechMarquee({ className }: { className?: string }) {
+  const ref = useRef<HTMLDivElement>(null)
   const all = skillGroups.filter((g) => g.title !== "CS Core").flatMap((g) => g.items)
   const half = Math.ceil(all.length / 2)
   const rows = [all.slice(0, half), all.slice(half)]
 
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => el.toggleAttribute("data-playing", e.isIntersecting))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
   return (
     <div
+      ref={ref}
       aria-label={`Tools I use: ${all.join(", ")}`}
       role="img"
       className={cn(

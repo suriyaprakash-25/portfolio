@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef } from "react"
 import { prefersReducedMotion } from "@/components/fx/events"
 import { cn } from "@/lib/utils"
 
@@ -10,21 +10,25 @@ type Role = { text: string; typo?: { after: string; wrong: string } }
  * Types roles one after another with a block cursor.
  * A role with a `typo` gets mistyped, backspaced and fixed — build, break, debug.
  * Server renders the first role fully typed, so it reads fine without JS.
+ * Keystrokes are written straight to the DOM (no React re-render per character).
  */
 export function Typewriter({ roles, className }: { roles: readonly Role[]; className?: string }) {
-  const [text, setText] = useState(roles[0].text)
-  const [typing, setTyping] = useState(false)
+  const textRef = useRef<HTMLSpanElement>(null)
+  const caretRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
-    if (prefersReducedMotion() || roles.length < 2) return
+    const textEl = textRef.current
+    const caret = caretRef.current
+    if (!textEl || !caret || prefersReducedMotion() || roles.length < 2) return
     let alive = true
     const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
     let cur = roles[0].text
 
     const put = (s: string) => {
       cur = s
-      setText(s)
+      textEl.textContent = s || "​"
     }
+    const setTyping = (on: boolean) => caret.classList.toggle("caret-blink", !on)
     const type = async (s: string) => {
       for (const ch of s) {
         if (!alive) return
@@ -70,15 +74,13 @@ export function Typewriter({ roles, className }: { roles: readonly Role[]; class
 
   return (
     <span className={cn("inline-flex items-baseline whitespace-nowrap", className)}>
-      <span className="bg-gradient-to-r from-accent via-sky-400 to-violet-400 bg-clip-text pb-[0.08em] text-transparent">
-        {text || "​"}
+      <span ref={textRef} className="bg-gradient-to-r from-accent via-sky-400 to-violet-400 bg-clip-text pb-[0.08em] text-transparent">
+        {roles[0].text}
       </span>
       <span
+        ref={caretRef}
         aria-hidden
-        className={cn(
-          "ml-[0.08em] inline-block h-[0.82em] w-[0.42em] translate-y-[0.1em] rounded-[2px] bg-accent",
-          !typing && "animate-[caret_1s_steps(1)_infinite]",
-        )}
+        className="caret-blink ml-[0.08em] inline-block h-[0.82em] w-[0.42em] translate-y-[0.1em] rounded-[2px] bg-accent"
       />
     </span>
   )

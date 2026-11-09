@@ -6,7 +6,6 @@ import { GithubPulse } from "@/components/fx/github-pulse"
 import { HeroField } from "@/components/fx/hero-field"
 import { HoverScramble } from "@/components/fx/hover-scramble"
 import { LoopPill } from "@/components/fx/loop-pill"
-import { Scramble } from "@/components/fx/scramble"
 import { TryButton } from "@/components/fx/try-button"
 import { Typewriter } from "@/components/fx/typewriter"
 import { TechMarquee } from "@/components/tech-marquee"
@@ -29,7 +28,7 @@ export function Hero({ photo, resume, push }: { photo: string | null; resume: st
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1fr_340px] lg:gap-16">
         <div className="min-w-0">
           <div className="rise mb-7 flex flex-wrap items-center gap-2" style={d(0)}>
-            <p className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur">
+            <p className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground">
               <span className="relative flex h-2 w-2" aria-hidden>
                 <span className="animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-emerald-500/70" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
@@ -40,7 +39,7 @@ export function Hero({ photo, resume, push }: { photo: string | null; resume: st
           </div>
 
           <p className="rise mb-4 font-mono text-xs uppercase tracking-[0.22em] text-accent sm:text-sm" style={d(1)}>
-            <Scramble text={profile.areas.join(" • ")} delay={350} />
+            <HoverScramble text={profile.areas.join(" • ")} />
           </p>
 
           {/* Big hello + typed roles */}
@@ -75,7 +74,7 @@ export function Hero({ photo, resume, push }: { photo: string | null; resume: st
           </h1>
 
           {/* GitHub tagline with a hand-drawn underline */}
-          <p className="rise mt-6 max-w-2xl text-xl font-medium leading-snug tracking-tight text-foreground/90 sm:text-2xl" style={d(6)}>
+          <p className="rise-soft mt-6 max-w-2xl text-xl font-medium leading-snug tracking-tight text-foreground/90 sm:text-2xl">
             {words.slice(0, underlineFrom).join(" ")}{" "}
             <span className="relative inline-block whitespace-nowrap text-accent">
               {words.slice(underlineFrom).join(" ")}
@@ -97,7 +96,7 @@ export function Hero({ photo, resume, push }: { photo: string | null; resume: st
             </span>
           </p>
 
-          <p className="rise mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground" style={d(7)}>
+          <p className="rise-soft mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             {profile.introShort}
           </p>
           <p className="rise mt-4 flex items-center gap-1.5 text-sm text-subtle-foreground" style={d(7)}>
@@ -165,7 +164,7 @@ export function Hero({ photo, resume, push }: { photo: string | null; resume: st
       <div className="rise mx-auto mt-20 max-w-6xl px-5 sm:px-8" style={d(10)}>
         <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border lg:grid-cols-4">
           {heroStats.map((s) => (
-            <div key={s.label} data-spotlight className="bg-card/85 p-5 backdrop-blur sm:p-6">
+            <div key={s.label} data-spotlight className="bg-card p-5 sm:p-6">
               <dt className="sr-only">{s.label}</dt>
               <dd className="text-2xl font-semibold tracking-tight sm:text-3xl">
                 <CountUp value={s.value} />
