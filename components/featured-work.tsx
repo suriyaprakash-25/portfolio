@@ -24,7 +24,8 @@ export function FeaturedWork() {
               <Link
                 href={`/work/${project.slug}`}
                 className={cn("group block lg:col-span-7", i % 2 === 1 && "lg:order-2")}
-                aria-label={`Read the ${project.name} case study`}
+                // duplicate of the title link next to it: mouse shortcut only, hidden from keyboard & screen readers
+                aria-hidden="true"
                 tabIndex={-1}
               >
                 <div data-tilt className="rounded-2xl">

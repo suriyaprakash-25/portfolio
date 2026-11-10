@@ -11,12 +11,12 @@
   --card: oklch(1 0 0);
   --muted: oklch(0.955 0.006 247);
   --muted-foreground: oklch(0.47 0.02 255);
-  --subtle-foreground: oklch(0.58 0.015 255);
+  --subtle-foreground: oklch(0.5 0.015 255); /* ≥ 4.5:1 on light surfaces */
   --border: oklch(0.91 0.008 250);
-  --accent: oklch(0.56 0.15 237); /* sky-600 — AA on light */
-  --accent-soft: oklch(0.56 0.15 237 / 0.1);
+  --accent: oklch(0.5 0.14 240); /* deep sky — ≥ 4.5:1 for small text on light */
+  --accent-soft: oklch(0.5 0.14 240 / 0.1);
   --accent-foreground: oklch(0.99 0 0);
-  --ring: oklch(0.56 0.15 237 / 0.55);
+  --ring: oklch(0.5 0.14 240 / 0.55);
   --grid-line: oklch(0.2 0.02 255 / 0.05);
 }
 
@@ -565,10 +565,14 @@
 /* ── Section titles reveal word by word ── */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
+    /* one shared view timeline per heading (cheap) — words stagger via ranges */
+    .reveal-title {
+      view-timeline-name: --title;
+    }
     .reveal-word {
       display: inline-block;
       animation: word-in linear both;
-      animation-timeline: view();
+      animation-timeline: --title;
       animation-range: entry calc(5% + var(--w, 0) * 5%) entry calc(50% + var(--w, 0) * 5%);
     }
   }

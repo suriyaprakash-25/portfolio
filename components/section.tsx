@@ -25,7 +25,7 @@ export function Section({ id, index, eyebrow, title, description, children, clas
             <span className="line-grow h-px w-8 bg-accent/50" aria-hidden />
             <span>{eyebrow}</span>
           </p>
-          <h2 id={`${id}-title`} className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+          <h2 id={`${id}-title`} className="reveal-title text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
             {typeof title === "string"
               ? title.split(" ").map((w, i) => (
                   <span key={i}>
