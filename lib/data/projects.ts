@@ -41,7 +41,7 @@ export const featuredProjects: FeaturedProject[] = [
       { label: "Live site", href: "https://www.driveportz.com", kind: "live" },
       { label: "Source", href: `${GH}/Digital-Twin`, kind: "code" },
     ],
-    image: "/work/driveportz.webp",
+    image: "/work/driveportz-v2.webp",
     problem:
       "A vehicle's history lives on paper bills, in service-centre systems and in its owner's memory. That makes it hard to track maintenance, prove service history, estimate resale value or know what a warning light actually means.",
     approach:
