@@ -2,13 +2,13 @@
   "name": "suriyaprakash-portfolio",
   "version": "2.0.0",
   "private": true,
-  "description": "Portfolio of Suriya Prakash R M — building intelligent systems, scalable software and real-world products.",
+  "description": "Portfolio of Suriya Prakash R M \u2014 building intelligent systems, scalable software and real-world products.",
   "author": "Suriya Prakash R M <suriyaprakashrm25@gmail.com>",
   "homepage": "https://www.suriyaprakashrm.dev",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "node init && next dev",
+    "build": "node init && next build",
+    "start": "node init && next start",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
