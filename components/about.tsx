@@ -7,7 +7,7 @@ import { about, profile } from "@/lib/data/profile"
 
 export function About() {
   return (
-    <Section id="about" index="03" eyebrow="About" title="Building by learning." component="About">
+    <Section id="about" index="03" eyebrow="About" title="Building by learning." component="About" band="white">
       <div className="grid gap-12 lg:grid-cols-12">
         <Reveal className="space-y-5 text-lg leading-relaxed text-muted-foreground lg:col-span-7">
           {about.paragraphs.map((p) => (
@@ -78,7 +78,7 @@ export function About() {
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div data-spotlight className="rounded-2xl border border-border bg-card p-6">
+    <div data-spotlight className="pp-card rounded-2xl border border-border bg-card p-6">
       <h3 className="mb-4 font-mono text-xs uppercase tracking-[0.18em] text-subtle-foreground">{title}</h3>
       {children}
     </div>

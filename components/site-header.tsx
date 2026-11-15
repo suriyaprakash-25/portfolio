@@ -8,6 +8,7 @@ import { emit, EVENTS } from "@/components/fx/events"
 import { Avatar } from "@/components/avatar"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { profile } from "@/lib/data/profile"
+import { featuredProjects, labProjects } from "@/lib/data/projects"
 import { cn } from "@/lib/utils"
 
 const nav = [
@@ -55,7 +56,7 @@ export function SiteHeader({ photo, resume }: { photo: string | null; resume: st
   return (
     <header
       className={cn(
-        "header-in fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300",
+        "pp-header header-in fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300",
         scrolled || open ? "border-b border-border/70 bg-background/80 backdrop-blur-xl" : "border-b border-transparent",
       )}
     >
@@ -67,8 +68,11 @@ export function SiteHeader({ photo, resume }: { photo: string | null; resume: st
       </a>
       <nav aria-label="Primary" className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
         <Link href="/" className="group flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <Avatar photo={photo} size="nav" />
-          <span className="text-sm font-semibold tracking-tight">
+          <Avatar photo={photo} size="nav" className="paper:hidden" />
+          <span className="pp-mark hidden paper:grid" aria-hidden>
+            {profile.firstName[0]}
+          </span>
+          <span className="text-sm font-semibold tracking-tight paper:text-base paper:font-bold">
             {profile.name}
           </span>
         </Link>
@@ -80,8 +84,8 @@ export function SiteHeader({ photo, resume }: { photo: string | null; resume: st
               href={`/#${item.id}`}
               aria-current={active === item.id ? "true" : undefined}
               className={cn(
-                "group rounded-full px-3.5 py-2 text-sm transition-colors",
-                active === item.id ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+                "group rounded-full px-3.5 py-2 text-sm transition-colors paper:font-semibold",
+                active === item.id ? "text-foreground" : "text-muted-foreground hover:text-foreground paper:text-foreground paper:hover:text-accent",
               )}
             >
               {item.label}
@@ -96,13 +100,13 @@ export function SiteHeader({ photo, resume }: { photo: string | null; resume: st
           ))}
           <span className="mx-2 h-5 w-px bg-border" aria-hidden />
           <TerminalButton />
-          <ThemeToggle />
+          <ThemeToggle withLabel />
           {resume && (
             <a
               href={resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-2 inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+              className="pp-btn-solid ml-2 inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
             >
               <FileText className="h-3.5 w-3.5" />
               Résumé
@@ -126,8 +130,11 @@ export function SiteHeader({ photo, resume }: { photo: string | null; resume: st
         </div>
       </nav>
 
+      {/* Paper edition: a running ticker band under the header */}
+      <Ticker />
+
       {open && (
-        <div id="mobile-nav" className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-border/70 px-5 pb-10 pt-4 md:hidden">
+        <div id="mobile-nav" className="h-[calc(100dvh-4rem)] overflow-y-auto paper:h-[calc(100dvh-6.25rem)] border-t border-border/70 px-5 pb-10 pt-4 md:hidden">
           <ul className="flex flex-col">
             {nav.map((item) => (
               <li key={item.id}>
@@ -146,7 +153,7 @@ export function SiteHeader({ photo, resume }: { photo: string | null; resume: st
               href={resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-3.5 font-medium text-accent-foreground"
+              className="pp-btn-solid mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-3.5 font-medium text-accent-foreground"
             >
               <FileText className="h-4 w-4" />
               Download résumé
@@ -169,5 +176,28 @@ function TerminalButton() {
     >
       <SquareTerminal className="h-4 w-4 transition-transform group-hover:-rotate-6 group-hover:scale-110" />
     </button>
+  )
+}
+
+/** Project names on a loop, with the motto riding along. Paper edition only; decorative. */
+function Ticker() {
+  const items = [
+    ...featuredProjects.map((p) => p.name),
+    profile.motto.join(" → "),
+    ...labProjects.slice(0, 6).map((p) => p.name),
+  ]
+  const row = (key: string) =>
+    items.map((t, i) => (
+      <span key={key + i} className={cn("pp-ticker-item", t.includes("→") && "pp-ticker-motto")}>
+        {t}
+      </span>
+    ))
+  return (
+    <div className="pp-ticker hidden paper:block" aria-hidden>
+      <div className="pp-ticker-track">
+        {row("a")}
+        {row("b")}
+      </div>
+    </div>
   )
 }

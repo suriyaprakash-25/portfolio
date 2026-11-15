@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import type { ReactNode } from "react"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Bricolage_Grotesque, Geist, Geist_Mono, JetBrains_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SiteHeader } from "@/components/site-header"
@@ -12,6 +12,9 @@ import "./globals.css"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" })
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" })
+// Paper edition fonts: not preloaded, so Midnight visitors never download them
+const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-bricolage", display: "swap", preload: false })
+const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap", preload: false })
 
 const title = `${profile.name} — AI & Software Engineer`
 const description = `${profile.headline} B.Tech AI & Data Science student building AI systems, full-stack products and cloud infrastructure.`
@@ -50,10 +53,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f9fc" },
-    { media: "(prefers-color-scheme: dark)", color: "#12151b" },
-  ],
+  // Midnight by default; ThemeToggle swaps it to paper (#f4f4ef) when Paper is on
+  themeColor: "#12151b",
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -61,9 +62,22 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const resume = getResume()
 
   return (
-    <html lang="en" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      // "dark" = Midnight, so the page is right even before/without JS; next-themes swaps it for "paper"
+      className={`dark ${geist.variable} ${geistMono.variable} ${bricolage.variable} ${jetbrains.variable}`}
+    >
       <body className="font-sans">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+        {/* Two editions: "dark" → Midnight (.dark), "light" → Paper (.paper). Keys kept so saved choices still work. */}
+        <ThemeProvider
+          attribute="class"
+          themes={["dark", "light"]}
+          value={{ dark: "dark", light: "paper" }}
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
           <div className="scroll-progress" aria-hidden />
           <SiteHeader photo={photo} resume={resume} />
           <main id="main">{children}</main>

@@ -74,13 +74,13 @@ export function Typewriter({ roles, className }: { roles: readonly Role[]; class
 
   return (
     <span className={cn("inline-flex items-baseline whitespace-nowrap", className)}>
-      <span ref={textRef} className="bg-gradient-to-r from-accent via-sky-400 to-violet-400 bg-clip-text pb-[0.08em] text-transparent">
+      <span ref={textRef} className="pp-typed bg-gradient-to-r from-accent via-sky-400 to-violet-400 bg-clip-text pb-[0.08em] text-transparent">
         {roles[0].text}
       </span>
       <span
         ref={caretRef}
         aria-hidden
-        className="caret-blink ml-[0.08em] inline-block h-[0.82em] w-[0.42em] translate-y-[0.1em] rounded-[2px] bg-accent"
+        className="pp-caret caret-blink ml-[0.08em] inline-block h-[0.82em] w-[0.42em] translate-y-[0.1em] rounded-[2px] bg-accent"
       />
     </span>
   )

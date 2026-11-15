@@ -2,7 +2,7 @@
 
 Personal portfolio of **Suriya Prakash R M** — building intelligent systems, scalable software and real-world products.
 
-Built with Next.js 16, React 19, TypeScript and Tailwind CSS v4. Fully static, light/dark themes, case-study pages, generated social preview image.
+Built with Next.js 16, React 19, TypeScript and Tailwind CSS v4. Fully static, two complete editions (Midnight and Paper) behind one switch, case-study pages, generated social preview image.
 
 ## Run locally
 

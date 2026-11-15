@@ -69,7 +69,7 @@ export function BuildLoop() {
     >
       {/* ── The ring ── */}
       <div className="relative mx-auto aspect-square w-full max-w-[400px]">
-        <div className="absolute inset-[15%] rounded-full border border-dashed border-border" aria-hidden />
+        <div className="absolute inset-[15%] rounded-full border border-dashed border-border paper:border-[1.5px] paper:border-foreground/40" aria-hidden />
         <div className="glow absolute inset-[22%] rounded-full opacity-80" aria-hidden />
 
         {/* comet */}
@@ -99,8 +99,8 @@ export function BuildLoop() {
             key={step.step}
             className={cn(
               "panel-in mt-1 text-2xl font-semibold tracking-tight sm:text-3xl",
-              step.step === "Break" && !reduced && "glitch text-rose-400",
-              step.step === "Ship" && "text-emerald-400",
+              step.step === "Break" && !reduced && "glitch text-rose-400 paper:text-rose-600",
+              step.step === "Ship" && "text-emerald-400 paper:text-emerald-700",
             )}
           >
             {step.step}
@@ -129,7 +129,7 @@ export function BuildLoop() {
                   "absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border px-2.5 py-1 font-mono text-[11px] transition-all duration-300 sm:text-xs",
                   i === active
                     ? "scale-110 border-accent bg-accent text-accent-foreground shadow-lg shadow-accent/20"
-                    : "border-border bg-card text-muted-foreground hover:border-accent/60 hover:text-foreground",
+                    : "border-border bg-card text-muted-foreground hover:border-accent/60 hover:text-foreground paper:border-[1.5px] paper:border-foreground paper:text-foreground",
                 )}
                 style={{ left: `${50 + r * Math.cos(angle)}%`, top: `${50 + r * Math.sin(angle)}%` }}
               >
@@ -145,7 +145,7 @@ export function BuildLoop() {
         id="loop-panel"
         role="tabpanel"
         aria-labelledby={`loop-tab-${active}`}
-        className="relative overflow-hidden rounded-2xl border border-border bg-card p-6 sm:p-8"
+        className="pp-card-static relative overflow-hidden rounded-2xl border border-border bg-card p-6 sm:p-8"
         data-spotlight
       >
         <div key={active} className="panel-in">

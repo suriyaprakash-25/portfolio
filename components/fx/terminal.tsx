@@ -27,7 +27,7 @@ const COMMANDS: Record<string, string> = {
   linkedin: "open LinkedIn",
   try: "run an experiment on this page",
   ship: "ship it 🚀",
-  theme: "theme <light|dark>",
+  theme: "theme <paper|midnight>",
   clear: "clear the screen",
   exit: "close the terminal",
 }
@@ -268,9 +268,13 @@ export function Terminal({ resume }: { resume: string | null }) {
       case "gravity":
         return experiment(cmd.toLowerCase() as ExperimentName)
       case "theme":
-        if (arg !== "light" && arg !== "dark") return print("out", "usage: theme <light|dark>")
-        setTheme(arg)
-        return print("out", `theme → ${arg}`)
+      case "edition": {
+        // two editions of the site: Paper (next-themes "light") and Midnight ("dark")
+        const want = ({ paper: "light", light: "light", midnight: "dark", dark: "dark" } as Record<string, string>)[arg]
+        if (!want) return print("out", "usage: theme <paper|midnight>")
+        setTheme(want)
+        return print("out", `edition → ${want === "light" ? "Paper" : "Midnight"}`)
+      }
       case "sudo":
         if (arg.includes("hire")) {
           window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent("Let's work together")}`

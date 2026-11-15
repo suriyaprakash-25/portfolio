@@ -2,18 +2,19 @@ import { GraduationCap } from "lucide-react"
 import { Reveal } from "@/components/reveal"
 import { Section, Tag } from "@/components/section"
 import { education, experience } from "@/lib/data/career"
+import { cn } from "@/lib/utils"
 
 export function Experience() {
   return (
-    <Section id="experience" index="04" eyebrow="Experience" title="Where I've been building." className="bg-muted/40" component="Experience">
+    <Section id="experience" index="04" eyebrow="Experience" title="Where I've been building." className="bg-muted/40" component="Experience" band="paper">
       <div className="grid gap-14 lg:grid-cols-12">
         <div className="relative lg:col-span-8">
-        <span aria-hidden className="timeline-draw absolute left-0 top-0 h-full w-px bg-gradient-to-b from-accent via-violet-400 to-transparent" />
-        <ol className="relative space-y-10 border-l border-border pl-8">
+        <span aria-hidden className="timeline-draw paper:hidden absolute left-0 top-0 h-full w-px bg-gradient-to-b from-accent via-violet-400 to-transparent" />
+        <ol className="pp-rail relative space-y-10 border-l border-border pl-8">
           {experience.map((job, i) => (
-            <Reveal as="li" key={job.org + job.role} delay={i * 0.05} className="relative">
+            <Reveal as="li" key={job.org + job.role} delay={i * 0.05} className={cn("relative", i === 0 && "pp-xp")}>
                 <span
-                  className="absolute -left-[37px] top-1.5 h-3 w-3 rounded-full border-2 border-accent bg-background"
+                  className={cn("pp-dot absolute -left-[37px] top-1.5 h-3 w-3 rounded-full border-2 border-accent bg-background", i === 0 && "pp-dot-now")}
                   aria-hidden
                 />
                 <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
@@ -46,7 +47,7 @@ export function Experience() {
         </div>
 
         <Reveal delay={0.1} className="lg:col-span-4">
-          <div data-spotlight className="rounded-2xl border border-border bg-card p-6">
+          <div data-spotlight className="pp-card-static rounded-2xl border border-border bg-card p-6">
             <h3 className="mb-5 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-subtle-foreground">
               <GraduationCap className="h-4 w-4" /> Education
             </h3>

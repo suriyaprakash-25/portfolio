@@ -3,7 +3,7 @@ import { profile } from "@/lib/data/profile"
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border px-5 py-8 sm:px-8">
+    <footer className="pp-band-ink border-t border-border px-5 py-8 sm:px-8">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-subtle-foreground sm:flex-row">
         <p>
           © {new Date().getFullYear()} {profile.name} · Designed &amp; built by me.

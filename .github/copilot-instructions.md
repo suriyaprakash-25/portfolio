@@ -14,8 +14,12 @@ Personal portfolio built with Next.js 16 (App Router), React 19, TypeScript and 
 ## Rules
 - Content must stay consistent with the résumé and the GitHub profile README. Never invent metrics.
 - Edit content in `lib/data/*`, not inside components.
-- Design tokens live in `app/globals.css` (`:root` = light, `.dark` = dark). Use token classes
-  (`bg-card`, `text-muted-foreground`, `text-accent`, …), not raw colours.
+- Two editions share one codebase: Midnight (next-themes `dark` → `.dark`) and Paper (next-themes
+  `light` → `.paper`). Tokens live in `app/globals.css` (`:root, .paper` = Paper, `.dark` = Midnight).
+  Use token classes (`bg-card`, `text-muted-foreground`, `text-accent`, …), not raw colours.
+- Paper styling: add a `pp-*` hook class (see the PAPER EDITION block in `globals.css`) or a
+  `paper:` variant utility. Hooks do nothing in Midnight. Paper-only elements use `hidden paper:block`.
+  Sections pick a Paper background band with `<Section band="paper|white|ink|lime">`.
 - Keep components server components unless they need state (header, theme toggle, lab filter, copy button).
 - Motion must degrade gracefully: respect `prefers-reduced-motion`, never hide content behind JS,
   and pause continuous animations off-screen. Decorative hooks are data attributes:

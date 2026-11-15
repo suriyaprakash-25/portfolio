@@ -15,12 +15,13 @@ export function FeaturedWork() {
       eyebrow="Selected work"
       title="Products I've designed, built and shipped."
       component="FeaturedWork"
+      band="ink"
       description="Three projects I'm proudest of — each one started with a real problem. Open a case study for the problem, the approach and what I built."
     >
       <div className="flex flex-col gap-20 sm:gap-28">
         {featuredProjects.map((project, i) => (
           <Reveal key={project.slug}>
-            <article className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
+            <article className={cn("grid items-center gap-8 lg:grid-cols-12 lg:gap-12", i === 0 ? "pp-case pp-case-hero" : "pp-case")}>
               <Link
                 href={`/work/${project.slug}`}
                 className={cn("group block lg:col-span-7", i % 2 === 1 && "lg:order-2")}
@@ -34,7 +35,7 @@ export function FeaturedWork() {
               </Link>
 
               <div className="lg:col-span-5">
-                <p className="mb-4 font-mono text-5xl font-semibold leading-none tracking-tighter text-transparent [-webkit-text-stroke:1px_var(--border)] sm:text-6xl" aria-hidden>
+                <p className="pp-case-num mb-4 font-mono text-5xl font-semibold leading-none tracking-tighter text-transparent [-webkit-text-stroke:1px_var(--border)] sm:text-6xl" aria-hidden>
                   {String(i + 1).padStart(2, "0")}
                 </p>
                 <p className="font-mono text-xs uppercase tracking-[0.18em] text-subtle-foreground">
@@ -72,7 +73,7 @@ export function FeaturedWork() {
                 </ul>
 
                 <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-medium">
-                  <Link href={`/work/${project.slug}`} className="group inline-flex items-center gap-1.5 text-foreground hover:text-accent">
+                  <Link href={`/work/${project.slug}`} className="pp-more group inline-flex items-center gap-1.5 text-foreground hover:text-accent">
                     Read case study
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </Link>

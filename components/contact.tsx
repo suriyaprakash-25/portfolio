@@ -11,12 +11,16 @@ export function Contact({ resume }: { resume: string | null }) {
   ]
 
   return (
-    <section id="contact" data-component="Contact" aria-labelledby="contact-title" className="relative overflow-hidden px-5 py-24 sm:px-8 sm:py-32">
+    <section id="contact" data-component="Contact" aria-labelledby="contact-title" className="pp-band-lime relative overflow-hidden px-5 py-24 sm:px-8 sm:py-32">
       <div className="glow pointer-events-none absolute bottom-0 left-1/2 -z-10 h-[480px] w-[900px] -translate-x-1/2 translate-y-1/2" aria-hidden />
       <div className="mx-auto max-w-6xl">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">07 — Contact</p>
-          <h2 id="contact-title" className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+          <p className="mb-4 flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-accent">
+            <span className="pp-kicker">07</span>
+            <span className="paper:hidden" aria-hidden>—</span>
+            <span>Contact</span>
+          </p>
+          <h2 id="contact-title" className="pp-h2 mx-auto text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
             Build something <span className="text-shimmer">meaningful.</span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
@@ -27,7 +31,7 @@ export function Contact({ resume }: { resume: string | null }) {
             <a
               href={`mailto:${profile.email}?subject=${encodeURIComponent("Hello Suriya")}`}
               data-magnetic
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+              className="pp-btn-solid inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
             >
               <Mail className="h-4 w-4" /> Say hello
             </a>
@@ -37,7 +41,7 @@ export function Contact({ resume }: { resume: string | null }) {
                 href={resume}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card px-6 py-3.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+                className="pp-btn inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card px-6 py-3.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
               >
                 <FileText className="h-4 w-4" /> Résumé
               </a>
@@ -53,7 +57,7 @@ export function Contact({ resume }: { resume: string | null }) {
                   href={c.href}
                   {...(c.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   data-spotlight
-                  className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-5 hover:border-accent/50"
+                  className="pp-card group flex items-center gap-4 rounded-2xl border border-border bg-card p-5 hover:border-accent/50"
                 >
                   <c.icon className="h-5 w-5 shrink-0 text-muted-foreground transition-colors group-hover:text-accent" />
                   <div className="min-w-0 flex-1">

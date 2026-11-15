@@ -49,7 +49,12 @@ export function PointerFx() {
         spot.style.setProperty("--mx", `${e.clientX - r.left}px`)
         spot.style.setProperty("--my", `${e.clientY - r.top}px`)
       }
-      if (reduced) return
+      // Paper edition is flat and hard-edged: no leaning buttons or 3D tilt there.
+      if (reduced || document.documentElement.classList.contains("paper")) {
+        resetMagnet()
+        resetTilt()
+        return
+      }
 
       const m = target?.closest<HTMLElement>("[data-magnetic]") ?? null
       if (m !== magnet) resetMagnet()

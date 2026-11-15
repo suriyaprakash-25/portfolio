@@ -1,26 +1,49 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+/* The second edition of the site: "Paper" (next-themes "light" → class .paper) */
+@custom-variant paper (&:where(.paper, .paper *));
 
 /* ── Tokens ─────────────────────────────────────────────
-   Accent = sky blue, the same #38BDF8 used on the GitHub
-   profile banner, so the brand reads the same everywhere. */
-:root {
-  --background: oklch(0.985 0.003 247);
-  --foreground: oklch(0.2 0.02 255);
-  --card: oklch(1 0 0);
-  --muted: oklch(0.955 0.006 247);
-  --muted-foreground: oklch(0.47 0.02 255);
-  --subtle-foreground: oklch(0.5 0.015 255); /* ≥ 4.5:1 on light surfaces */
-  --border: oklch(0.91 0.008 250);
-  --accent: oklch(0.5 0.14 240); /* deep sky — ≥ 4.5:1 for small text on light */
-  --accent-soft: oklch(0.5 0.14 240 / 0.1);
-  --accent-foreground: oklch(0.99 0 0);
-  --ring: oklch(0.5 0.14 240 / 0.55);
-  --grid-line: oklch(0.2 0.02 255 / 0.05);
+   Two editions share one codebase:
+   · Midnight (.dark)  — sky-blue accent, #38BDF8 like the GitHub banner
+   · Paper   (.paper)  — ink on warm paper, cobalt + lime, hard shadows
+   Every pair below is ≥ 4.5:1 (checked). */
+:root,
+.paper {
+  --paper: #f4f4ef;
+  --ink: #14131a;
+  --ink-2: #1e1c28;
+  --line: #d6d5cb;
+  --grid: #e3e3d9;
+  --cobalt: #2448e0;
+  --cobalt-deep: #1a2a8c;
+  --cobalt-soft: #e4e9ff;
+  --lime: #c8f542;
+  --lime-soft: #edf8c6;
+  --hair: rgb(255 255 255 / 0.14);
+  --soft: #b9b7c4;
+  --pop: var(--lime); /* colour of the hard offset shadow */
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: #ffffff;
+  --muted: #ebeae3;
+  --muted-foreground: #4a4943;
+  --subtle-foreground: #5f5e58;
+  --border: var(--line);
+  --accent: var(--cobalt);
+  --accent-soft: rgb(36 72 224 / 0.1);
+  --accent-foreground: #ffffff;
+  --ring: var(--cobalt);
+  --grid-line: rgb(20 19 26 / 0.05);
+  --font-body: var(--font-bricolage);
+  --font-code: var(--font-jetbrains);
 }
 
 .dark {
+  --font-body: var(--font-geist);
+  --font-code: var(--font-geist-mono);
   --background: oklch(0.155 0.012 255);
   --foreground: oklch(0.95 0.005 250);
   --card: oklch(0.19 0.014 255);
@@ -36,8 +59,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-code), ui-monospace, monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -660,4 +683,547 @@
 }
 .group:hover .hop {
   animation: hop 0.6s var(--ease-out);
+}
+
+/* ═══════════════════════════════════════════════════════
+   PAPER EDITION
+   A second, complete design for the same content: ink on
+   warm paper, 1.5px outlines, hard offset shadows, mono
+   labels, colour-banded sections. Components opt in with
+   `pp-*` hook classes that do nothing in Midnight. These
+   rules are unlayered, so they win over Tailwind utilities.
+   ═══════════════════════════════════════════════════════ */
+
+html.paper {
+  scroll-padding-top: 7.5rem;
+}
+.paper body {
+  font-feature-settings: normal;
+}
+.paper ::selection {
+  background: var(--lime);
+  color: var(--ink);
+}
+.paper :focus-visible {
+  outline-width: 3px;
+}
+.paper h1 {
+  font-weight: 800;
+  letter-spacing: -0.045em;
+}
+.paper h3:not(.font-mono) {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.paper .glow {
+  display: none;
+}
+.paper [data-spotlight] {
+  background-image: none;
+}
+.paper [data-tilt] {
+  transform: none;
+}
+.paper .scroll-progress {
+  height: 3px;
+  background: var(--cobalt);
+}
+
+/* ── Colour bands: each section re-maps the tokens, so every
+      utility inside it adapts without per-element overrides ── */
+.paper .pp-band-white {
+  --background: #ffffff;
+  background-color: #ffffff;
+  border-block: 1px solid var(--line);
+}
+.paper .pp-band-ink {
+  --background: var(--ink);
+  --foreground: #ffffff;
+  --card: var(--ink-2);
+  --muted: #262432;
+  --muted-foreground: var(--soft);
+  --subtle-foreground: #a19faf;
+  --border: var(--hair);
+  --accent: var(--lime);
+  --accent-soft: rgb(200 245 66 / 0.12);
+  --accent-foreground: var(--ink);
+  --ring: var(--lime);
+  --pop: var(--lime);
+  --frame: var(--hair);
+  --kicker-bg: var(--lime);
+  --kicker-fg: var(--ink);
+  background-color: var(--ink);
+  color: var(--foreground);
+  border-color: transparent;
+}
+.paper .pp-band-cobalt {
+  --foreground: #ffffff;
+  --border: rgb(255 255 255 / 0.25);
+  background-color: var(--cobalt);
+  color: #ffffff;
+  border-color: transparent;
+}
+.paper .pp-band-lime {
+  --background: var(--lime);
+  --foreground: var(--ink);
+  --muted-foreground: #2e2d34;
+  --subtle-foreground: #2e2d34;
+  --border: var(--ink);
+  --accent: var(--ink);
+  --accent-soft: rgb(20 19 26 / 0.08);
+  --accent-foreground: var(--lime);
+  --ring: var(--ink);
+  --pop: var(--ink);
+  background-color: var(--lime);
+}
+/* Lab / Experience / Recognition use bg-muted in Midnight; plain paper here */
+.paper .pp-band-paper {
+  background-color: var(--paper);
+}
+
+/* ── Header: brand mark + ticker band ── */
+.paper .pp-header {
+  background: rgb(244 244 239 / 0.9);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.pp-mark {
+  position: relative;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--cobalt);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1;
+}
+.pp-mark::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--lime);
+  border: 2px solid var(--paper);
+}
+.pp-ticker {
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--lime);
+}
+.pp-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: pp-tick 52s linear infinite;
+}
+.pp-ticker:hover .pp-ticker-track {
+  animation-play-state: paused;
+}
+.pp-ticker-item {
+  padding: 9px 0;
+  white-space: nowrap;
+  font: 500 0.68rem/1.4 var(--font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.pp-ticker-item::after {
+  content: "\2726";
+  margin: 0 24px;
+  color: #ffffff;
+  opacity: 0.45;
+}
+.pp-ticker-motto {
+  color: #ffffff;
+}
+@keyframes pp-tick {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ── Buttons: outlined / solid pills with a hard "press" ── */
+.paper :is(.pp-btn, .pp-btn-solid) {
+  border: 1.5px solid var(--foreground);
+  font-weight: 700;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, translate 0.15s ease, box-shadow 0.15s ease;
+}
+.paper .pp-btn {
+  background: transparent;
+  color: var(--foreground);
+}
+.paper .pp-btn:hover {
+  background: var(--foreground);
+  color: var(--background);
+}
+.paper .pp-btn-solid {
+  background: var(--foreground);
+  color: var(--background);
+}
+.paper .pp-btn-solid:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-foreground);
+}
+.paper :is(.pp-btn, .pp-btn-solid):hover {
+  translate: -2px -2px;
+  box-shadow: 4px 4px 0 var(--pop);
+}
+.paper :is(.pp-btn, .pp-btn-solid):active {
+  translate: 1px 1px;
+  box-shadow: 0 0 0 var(--pop);
+}
+.paper .pp-btn-solid::after {
+  display: none; /* no glossy shine in Paper */
+}
+.paper .pp-more {
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--accent);
+  font-weight: 700;
+}
+
+/* ── Hero ── */
+.paper .pp-hero {
+  padding-top: 8.5rem;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 34px 34px;
+  background-position: center top;
+}
+@media (min-width: 640px) {
+  .paper .pp-hero {
+    padding-top: 10.5rem;
+  }
+}
+.paper .pp-pill {
+  border: 1.5px solid var(--ink);
+  background: #ffffff;
+  color: var(--ink);
+}
+.paper .pp-status {
+  font: 500 0.68rem/1.5 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+/* The typed role: ink on a lime highlighter that grows/shrinks with every keystroke */
+.paper .pp-typed {
+  background-image: linear-gradient(transparent 58%, var(--lime) 58% 92%, transparent 92%);
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: var(--ink);
+  -webkit-text-fill-color: var(--ink);
+}
+.paper .pp-caret {
+  background: var(--ink);
+}
+.paper .pp-stats {
+  border: 1.5px solid var(--ink);
+  border-radius: 20px;
+  background: var(--line);
+}
+.paper .pp-stats dd:first-of-type {
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+/* Portrait: terminal-framed, halftone duotone until you hover */
+.paper .pp-frame {
+  overflow: hidden;
+  border: 1.5px solid var(--ink);
+  border-radius: 26px;
+  background: var(--ink);
+  box-shadow: 12px 12px 0 var(--pop);
+  transition: translate 0.2s ease, box-shadow 0.2s ease;
+}
+.paper .pp-frame:hover {
+  translate: -4px -4px;
+  box-shadow: 16px 16px 0 var(--pop);
+}
+.paper .pp-avatar {
+  border-radius: 0;
+  box-shadow: none;
+}
+.paper .pp-avatar img {
+  filter: grayscale(1) contrast(1.15) brightness(1.05);
+  transition: filter 0.6s ease;
+}
+.pp-halftone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.pp-halftone::before,
+.pp-halftone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.pp-halftone::before {
+  background: var(--cobalt-deep);
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+.pp-halftone::after {
+  background-image: radial-gradient(circle, rgb(20 19 26 / 0.55) 0.9px, transparent 1.4px);
+  background-size: 4px 4px;
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+.paper .pp-frame:hover .pp-avatar img {
+  filter: none;
+}
+.paper .pp-frame:hover .pp-halftone {
+  opacity: 0;
+}
+.pp-sticker {
+  position: absolute;
+  z-index: 2;
+  right: -14px;
+  top: 64%;
+  padding: 7px 14px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--lime);
+  color: var(--ink);
+  font: 500 0.66rem/1.4 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  rotate: 7deg;
+}
+.pp-sticker:hover {
+  animation: pp-wobble 0.5s ease-in-out;
+}
+@keyframes pp-wobble {
+  25% {
+    rotate: -5deg;
+  }
+  60% {
+    rotate: 11deg;
+  }
+}
+.pp-nametag {
+  position: absolute;
+  z-index: 2;
+  left: -14px;
+  bottom: 22px;
+  padding: 10px 16px 11px;
+  border: 1.5px solid var(--ink);
+  border-radius: 16px;
+  background: #ffffff;
+  color: var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+@media (min-width: 640px) {
+  .pp-sticker {
+    right: -28px;
+    top: 46%;
+  }
+  .pp-nametag {
+    left: -24px;
+  }
+}
+
+/* ── Section heads: [01] kicker pill, big heavy title, blurb on the right ── */
+.paper .pp-kicker {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--kicker-bg, var(--ink));
+  color: var(--kicker-fg, var(--lime));
+  letter-spacing: 0.06em;
+}
+.paper .pp-h2 {
+  max-width: 13em;
+  font-size: clamp(2.1rem, 5vw, 3.9rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+@media (min-width: 1024px) {
+  .paper .pp-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    align-items: end;
+    gap: 1.5rem 5rem;
+    max-width: none;
+  }
+  .paper .pp-head-desc {
+    margin-top: 0;
+  }
+}
+
+/* ── Cards ── */
+.paper .pp-card,
+.paper .pp-card-static {
+  border: 1.5px solid var(--ink);
+  border-radius: 18px;
+  background-color: var(--card);
+  transition: translate 0.15s ease, box-shadow 0.15s ease;
+}
+.paper .pp-card:hover {
+  translate: -3px -3px;
+  border-color: var(--ink);
+  box-shadow: 6px 6px 0 var(--pop);
+}
+.paper .pp-card-static {
+  box-shadow: 6px 6px 0 var(--pop);
+}
+.paper .pp-band-ink :is(.pp-card, .pp-card-static) {
+  border-color: var(--hair);
+}
+.paper .pp-band-ink .pp-card:hover {
+  border-color: var(--lime);
+}
+.paper .pp-filter {
+  border: 1.5px solid var(--ink);
+  font-weight: 600;
+}
+.paper .pp-filter[aria-pressed="false"] {
+  background: #ffffff;
+  color: var(--ink);
+}
+.paper .pp-filter[aria-pressed="false"]:hover {
+  background: var(--lime);
+}
+
+/* ── Featured work: case panels on the ink band ── */
+.paper .pp-case {
+  padding: clamp(20px, 4vw, 52px);
+  border: 1px solid var(--hair);
+  border-radius: 26px;
+  background: var(--ink-2);
+  transition: border-color 0.2s ease;
+}
+.paper .pp-case:hover {
+  border-color: var(--lime);
+}
+.paper .pp-case-hero {
+  --muted-foreground: rgb(255 255 255 / 0.86);
+  --subtle-foreground: rgb(255 255 255 / 0.78);
+  --border: rgb(255 255 255 / 0.22);
+  --muted: rgb(20 19 26 / 0.3);
+  border-color: transparent;
+  background-color: var(--cobalt-deep);
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+.paper .pp-case-num {
+  -webkit-text-stroke: 0;
+  color: var(--lime);
+}
+.paper .pp-shot {
+  border: 1.5px solid var(--frame, var(--ink));
+  border-radius: 18px;
+  box-shadow: 10px 10px 0 var(--pop);
+  transition: translate 0.2s ease, box-shadow 0.2s ease;
+}
+.paper .group:hover .pp-shot {
+  translate: -4px -4px;
+  box-shadow: 14px 14px 0 var(--pop);
+}
+
+/* ── Motto band on cobalt ── */
+.paper .pp-band-cobalt .band-break {
+  -webkit-text-stroke-color: var(--lime);
+}
+.paper .pp-band-cobalt .band-break:hover {
+  color: var(--lime);
+}
+
+/* ── Highlighter is a real lime marker in Paper ── */
+.paper .hl {
+  background-image: linear-gradient(transparent 56%, var(--lime) 0);
+}
+
+/* ── Experience rail ── */
+.paper .pp-rail {
+  border-left: 2px solid var(--ink);
+}
+.paper .pp-dot {
+  left: -41px;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--ink);
+  background: var(--background);
+}
+.paper .pp-dot-now {
+  background: var(--lime);
+  box-shadow: 0 0 0 5px rgb(200 245 66 / 0.45);
+}
+.paper .pp-xp {
+  padding: clamp(20px, 3vw, 32px);
+  border: 1.5px solid var(--ink);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 8px 8px 0 var(--pop);
+}
+
+/* ── Skills ── */
+.paper .pp-skill {
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--ink);
+  box-shadow: none;
+}
+.paper .pp-skill:hover,
+.paper .pp-skill:focus-visible {
+  translate: -2px -2px;
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
+}
+.paper .pp-tip {
+  border: 1.5px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+/* ── Recognition: "Fig." cards in pastel tints ── */
+.paper .pp-fig {
+  border: 1.5px solid var(--ink);
+  border-radius: 22px;
+  background: var(--cobalt-soft);
+  box-shadow: none;
+  transition: translate 0.15s ease, box-shadow 0.15s ease;
+}
+.paper .pp-fig:nth-child(even) {
+  background: var(--lime-soft);
+}
+.paper .pp-fig:hover {
+  translate: -3px -3px;
+  border-color: var(--ink);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+/* ── Case-study pages ── */
+.paper .pp-page-top {
+  padding-top: 9rem;
+}
+@media (min-width: 640px) {
+  .paper .pp-page-top {
+    padding-top: 11rem;
+  }
+}
+.paper .pp-step {
+  border: 0;
+  background: var(--ink);
+  color: var(--lime);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pp-ticker-track {
+    animation: none;
+  }
+  .paper :is(.pp-card, .pp-fig, .pp-frame, .pp-btn, .pp-btn-solid, .pp-skill):hover,
+  .paper .group:hover .pp-shot {
+    translate: none;
+  }
 }

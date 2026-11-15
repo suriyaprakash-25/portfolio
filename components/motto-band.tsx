@@ -26,7 +26,7 @@ export function MottoBand() {
     <section
       data-component="MottoBand"
       aria-label={`How I work: ${profile.motto.join(", then ")}`}
-      className="relative overflow-hidden border-y border-border py-8 sm:py-12"
+      className="pp-band-cobalt relative overflow-hidden border-y border-border py-8 sm:py-12"
     >
       <div aria-hidden className="flex flex-col gap-2 sm:gap-4">
         {row(false)}

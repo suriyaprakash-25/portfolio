@@ -64,6 +64,8 @@ export function HeroField({ className }: { className?: string }) {
     }
 
     const blitBase = () => {
+      // Hidden canvas (e.g. the Paper edition sets display:none) has no size — nothing to draw.
+      if (!base.width || !base.height) return
       ctx.setTransform(1, 0, 0, 1, 0, 0)
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       ctx.drawImage(base, 0, 0)

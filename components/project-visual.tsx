@@ -18,7 +18,7 @@ export function ProjectVisual({
   const host = project.links.find((l) => l.kind === "live")?.href.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")
 
   return (
-    <div className={cn("overflow-hidden rounded-2xl border border-border bg-card shadow-xl shadow-black/5", className)}>
+    <div className={cn("pp-shot overflow-hidden rounded-2xl border border-border bg-card shadow-xl shadow-black/5", className)}>
       <div className="flex items-center gap-2 border-b border-border bg-muted/60 px-4 py-2.5">
         <span className="flex gap-1.5" aria-hidden>
           <span className="h-2.5 w-2.5 rounded-full bg-foreground/15" />

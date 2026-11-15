@@ -38,7 +38,7 @@ export function Lab() {
             onClick={() => setFilter(f)}
             aria-pressed={filter === f}
             className={cn(
-              "rounded-full border px-4 py-1.5 text-sm transition-colors",
+              "pp-filter rounded-full border px-4 py-1.5 text-sm transition-colors",
               filter === f
                 ? "border-foreground bg-foreground text-background"
                 : "border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground",
@@ -56,7 +56,7 @@ export function Lab() {
             <li
               key={p.name}
               data-spotlight
-              className="panel-in group relative flex flex-col rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-accent/50 hover:shadow-lg hover:shadow-black/5"
+              className="pp-card panel-in group relative flex flex-col rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-accent/50 hover:shadow-lg hover:shadow-black/5"
             >
               <div className="mb-4 flex items-start justify-between gap-4">
                 <span className="font-mono text-[11px] uppercase tracking-wider text-accent">{p.category}</span>
@@ -99,7 +99,7 @@ export function Lab() {
           <button
             type="button"
             onClick={() => setExpanded(true)}
-            className="group inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+            className="pp-btn group inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
           >
             Show all {labProjects.length} experiments
             <ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />

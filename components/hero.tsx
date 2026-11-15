@@ -10,25 +10,30 @@ import { TryButton } from "@/components/fx/try-button"
 import { Typewriter } from "@/components/fx/typewriter"
 import { TechMarquee } from "@/components/tech-marquee"
 import { heroStats, profile } from "@/lib/data/profile"
+import { education } from "@/lib/data/career"
 import { relativeTime, type LatestPush } from "@/lib/github"
 import { cn } from "@/lib/utils"
 
 const d = (n: number) => ({ "--d": n }) as CSSProperties
+
+// "B.Tech, Artificial Intelligence & Data Science" → "B.Tech AI & DS"; "Sri Eshwar College of Engineering" → "Sri Eshwar"
+const degreeShort = education[0].degree.split(",")[0] + " AI & DS"
+const schoolShort = education[0].school.split(" ").slice(0, 2).join(" ")
 
 export function Hero({ photo, resume, push }: { photo: string | null; resume: string | null; push: LatestPush | null }) {
   const words = profile.headline.split(" ")
   const underlineFrom = words.length - 2 // "real-world products."
 
   return (
-    <section data-component="Hero" aria-labelledby="hero-title" className="relative overflow-hidden pb-6 pt-28 sm:pb-8 sm:pt-36">
+    <section data-component="Hero" aria-labelledby="hero-title" className="pp-hero relative overflow-hidden pb-6 pt-28 sm:pb-8 sm:pt-36">
       {/* Interactive dot field — move your cursor, click anywhere */}
-      <HeroField className="absolute inset-0 -z-10 h-full w-full" />
+      <HeroField className="absolute inset-0 -z-10 h-full w-full paper:hidden" />
       <div className="glow pointer-events-none absolute -top-40 left-1/2 -z-10 h-[520px] w-[820px] -translate-x-1/2" aria-hidden />
 
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1fr_340px] lg:gap-16">
         <div className="min-w-0">
           <div className="rise mb-7 flex flex-wrap items-center gap-2" style={d(0)}>
-            <p className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground">
+            <p className="pp-pill pp-status inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground">
               <span className="relative flex h-2 w-2" aria-hidden>
                 <span className="animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-emerald-500/70" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
@@ -107,7 +112,7 @@ export function Hero({ photo, resume, push }: { photo: string | null; resume: st
             <a
               href="#work"
               data-magnetic
-              className="btn-shine group inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-medium text-background"
+              className="pp-btn-solid btn-shine group inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-medium text-background"
             >
               See my work
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -118,7 +123,7 @@ export function Hero({ photo, resume, push }: { photo: string | null; resume: st
                 target="_blank"
                 rel="noopener noreferrer"
                 data-magnetic
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card/60 px-6 py-3.5 text-sm font-medium hover:border-accent hover:text-accent"
+                className="pp-btn inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card/60 px-6 py-3.5 text-sm font-medium hover:border-accent hover:text-accent"
               >
                 <FileText className="h-4 w-4" /> Download résumé
               </a>
@@ -126,7 +131,7 @@ export function Hero({ photo, resume, push }: { photo: string | null; resume: st
               <a
                 href="#contact"
                 data-magnetic
-                className="group inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card/60 px-6 py-3.5 text-sm font-medium hover:border-accent hover:text-accent"
+                className="pp-btn group inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card/60 px-6 py-3.5 text-sm font-medium hover:border-accent hover:text-accent"
               >
                 <Mail className="h-4 w-4 transition-transform group-hover:-rotate-12" /> Get in touch
               </a>
@@ -149,20 +154,43 @@ export function Hero({ photo, resume, push }: { photo: string | null; resume: st
           </div>
         </div>
 
-        {/* ── Profile photo (placeholder until public/profile.jpg exists) ── */}
+        {/* ── Profile photo ──
+            Midnight: tilting photo with a glow and the running loop pill.
+            Paper: terminal-framed halftone portrait (full colour on hover), name tag and a sticker. */}
         <div className="rise mx-auto w-full max-w-[240px] sm:max-w-[320px] lg:max-w-none" style={d(4)}>
-          <div className="relative">
-            <div className="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-br from-accent/25 via-transparent to-transparent blur-2xl" aria-hidden />
-            <div data-tilt className="rounded-3xl">
-              <Avatar photo={photo} size="hero" priority className="shadow-2xl shadow-black/10 ring-1 ring-border" />
+          <figure className="relative">
+            <div className="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-br from-accent/25 via-transparent to-transparent blur-2xl paper:hidden" aria-hidden />
+            <div data-tilt className="pp-frame rounded-3xl">
+              <div className="hidden items-center gap-2 px-4 py-2.5 font-mono text-[11px] text-[var(--lime)] paper:flex" aria-hidden>
+                <span className="flex gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-white/25" />
+                  <span className="h-2 w-2 rounded-full bg-white/25" />
+                  <span className="h-2 w-2 rounded-full bg-white/25" />
+                </span>
+                <span className="ml-1 truncate">
+                  {profile.firstName.toLowerCase()} ~ $ ./build --loop
+                  <span className="caret-blink ml-1 inline-block h-[1.05em] w-[0.55em] translate-y-[0.15em] bg-[var(--lime)]" />
+                </span>
+              </div>
+              <div className="relative">
+                <Avatar photo={photo} size="hero" priority className="pp-avatar shadow-2xl shadow-black/10 ring-1 ring-border" />
+                {photo && <span className="pp-halftone hidden paper:block" aria-hidden />}
+              </div>
             </div>
-            <LoopPill className="mx-auto mt-4 block w-fit sm:absolute sm:-bottom-4 sm:left-1/2 sm:mt-0 sm:w-max sm:-translate-x-1/2 sm:whitespace-nowrap" />
-          </div>
+            <p className="pp-sticker hidden paper:block" aria-hidden>
+              {degreeShort} / {schoolShort}
+            </p>
+            <figcaption className="pp-nametag hidden paper:block">
+              <strong className="block text-base font-extrabold leading-tight tracking-tight">{profile.name}</strong>
+              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-[#4a4943]">Build · Break · Ship</span>
+            </figcaption>
+            <LoopPill className="mx-auto mt-4 block w-fit sm:absolute sm:-bottom-4 sm:left-1/2 sm:mt-0 sm:w-max sm:-translate-x-1/2 sm:whitespace-nowrap paper:hidden" />
+          </figure>
         </div>
       </div>
 
       <div className="rise mx-auto mt-20 max-w-6xl px-5 sm:px-8" style={d(10)}>
-        <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border lg:grid-cols-4">
+        <dl className="pp-stats grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border lg:grid-cols-4">
           {heroStats.map((s) => (
             <div key={s.label} data-spotlight className="bg-card p-5 sm:p-6">
               <dt className="sr-only">{s.label}</dt>
