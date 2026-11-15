@@ -17,7 +17,6 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files
-.env*
 
 # vercel
 .vercel
@@ -37,3 +36,4 @@ next-env.d.ts
 # local recordings / large media (not part of the site)
 *.mp4
 *.mov
+config.bat
